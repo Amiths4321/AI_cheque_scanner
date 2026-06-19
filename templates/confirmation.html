@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Cheque Recorded{% endblock %}
+{% block content %}
+<div class="confirmation-card">
+    <h2>✅ Cheque Record Saved</h2>
+    <p>Reference number:</p>
+    <div class="ref-no">{{ record.reference_no }}</div>
+</div>
+
+<div class="review-card">
+    <h3>Details</h3>
+    <p><strong>Bank / Branch:</strong> {{ record.bank_name }} — {{ record.branch }}</p>
+    <p><strong>Cheque No:</strong> {{ record.cheque_number }} &middot; <strong>Date:</strong> {{ record.cheque_date }}</p>
+    <p><strong>MICR Code:</strong> {{ record.micr_code }} &middot; <strong>IFSC Code:</strong> {{ record.ifsc_code }}</p>
+    <p><strong>Payee:</strong> {{ record.payee_name }}</p>
+    <p><strong>Account Holder:</strong> {{ record.account_holder_name }} ({{ record.account_number }})</p>
+    <p><strong>Amount:</strong> ₹{{ record.amount_figures }} ({{ record.amount_words }})</p>
+
+    <h3>Checks</h3>
+    <p>
+        <strong>Amount words vs. figures:</strong>
+        {% if record.amount_match %}
+        <span class="badge badge-auto">Match</span>
+        {% else %}
+        <span class="badge badge-manual">Mismatch — please verify manually</span>
+        {% endif %}
+    </p>
+    <p>
+        <strong>IFSC format:</strong>
+        {% if record.ifsc_valid_format %}<span class="badge badge-auto">Valid format</span>
+        {% else %}<span class="badge badge-manual">Invalid / unrecognized format</span>{% endif %}
+        &nbsp; <strong>MICR format:</strong>
+        {% if record.micr_valid_format %}<span class="badge badge-auto">Valid format</span>
+        {% else %}<span class="badge badge-manual">Invalid / unrecognized format</span>{% endif %}
+    </p>
+    <p>
+        <strong>Signature area:</strong> {{ record.signature_present }}
+        <span class="hint">(presence detection only — not a verification of whose signature it is)</span>
+    </p>
+</div>
+
+<a class="btn btn-primary" href="{{ url_for('scan') }}">Scan Another Cheque</a>
+<a class="btn btn-secondary" href="{{ url_for('register') }}">View Register</a>
+{% endblock %}

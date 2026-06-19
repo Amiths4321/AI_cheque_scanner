@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Review Cheque Details{% endblock %}
+{% block content %}
+<h2>Review Extracted Details</h2>
+
+{% if data.extraction_method == "auto" %}
+<p class="badge badge-auto">✓ Auto-extracted from the cheque image</p>
+{% else %}
+<p class="badge badge-manual">Auto-scan wasn't able to read this cheque — please fill these in manually.</p>
+{% endif %}
+
+<form method="POST" class="form-card">
+    <label>Bank Name</label>
+    <input type="text" name="bank_name" value="{{ data.bank_name or '' }}">
+
+    <label>Branch</label>
+    <input type="text" name="branch" value="{{ data.branch or '' }}">
+
+    <label>Cheque Number</label>
+    <input type="text" name="cheque_number" value="{{ data.cheque_number or '' }}">
+
+    <label>MICR Code (9 digits)</label>
+    <input type="text" name="micr_code" value="{{ data.micr_code or '' }}">
+
+    <label>IFSC Code</label>
+    <input type="text" name="ifsc_code" value="{{ data.ifsc_code or '' }}" style="text-transform:uppercase">
+
+    <label>Date</label>
+    <input type="text" name="date" placeholder="DD/MM/YYYY" value="{{ data.date or '' }}">
+
+    <label>Payee Name (Pay to)</label>
+    <input type="text" name="payee_name" value="{{ data.payee_name or '' }}">
+
+    <label>Account Holder Name (pre-printed)</label>
+    <input type="text" name="account_holder_name" value="{{ data.account_holder_name or '' }}">
+
+    <label>Account Number</label>
+    <input type="text" name="account_number" value="{{ data.account_number or '' }}">
+
+    <label>Amount in Words</label>
+    <input type="text" name="amount_words" value="{{ data.amount_words or '' }}">
+
+    <label>Amount in Figures</label>
+    <input type="text" name="amount_figures" value="{{ data.amount_figures or '' }}">
+
+    <label>Signature in Signature Area</label>
+    <select name="signature_present">
+        <option value="Yes" {% if data.signature_present == 'Yes' %}selected{% endif %}>Yes — something resembling a signature is visible</option>
+        <option value="No" {% if data.signature_present == 'No' %}selected{% endif %}>No — signature area looks blank</option>
+        <option value="Unclear" {% if not data.signature_present or data.signature_present == 'Unclear' %}selected{% endif %}>Unclear</option>
+    </select>
+    <p class="hint">This only detects whether a signature appears present — it does not verify whose signature it is.</p>
+
+    <div class="form-actions">
+        <a class="btn btn-secondary" href="{{ url_for('scan') }}">&larr; Re-scan</a>
+        <button type="submit" class="btn btn-primary">Save Record &rarr;</button>
+    </div>
+</form>
+{% endblock %}

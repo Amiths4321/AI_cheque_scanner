@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Cheque Register{% endblock %}
+{% block content %}
+<h2>Cheque Register ({{ records|length }})</h2>
+
+<table class="admin-table">
+    <thead>
+        <tr>
+            <th>Reference No</th>
+            <th>Cheque No</th>
+            <th>Bank / Branch</th>
+            <th>Payee</th>
+            <th>Amount</th>
+            <th>Amount Check</th>
+            <th>IFSC</th>
+            <th>MICR</th>
+            <th>Signature</th>
+            <th>Method</th>
+            <th>Scanned On</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in records %}
+        <tr>
+            <td>{{ r.reference_no }}</td>
+            <td>{{ r.cheque_number }}</td>
+            <td>{{ r.bank_name }} / {{ r.branch }}</td>
+            <td>{{ r.payee_name }}</td>
+            <td>₹{{ "%.2f"|format(r.amount_figures) if r.amount_figures else "—" }}</td>
+            <td>
+                {% if r.amount_match %}<span class="badge badge-auto">Match</span>
+                {% else %}<span class="badge badge-manual">Mismatch</span>{% endif %}
+            </td>
+            <td>
+                {% if r.ifsc_valid_format %}<span class="badge badge-auto">{{ r.ifsc_code }}</span>
+                {% else %}<span class="badge badge-manual">{{ r.ifsc_code or "—" }}</span>{% endif %}
+            </td>
+            <td>
+                {% if r.micr_valid_format %}<span class="badge badge-auto">{{ r.micr_code }}</span>
+                {% else %}<span class="badge badge-manual">{{ r.micr_code or "—" }}</span>{% endif %}
+            </td>
+            <td>{{ r.signature_present }}</td>
+            <td>
+                {% if r.extraction_method == "auto" %}<span class="badge badge-auto">Auto</span>
+                {% else %}<span class="badge badge-manual">Manual</span>{% endif %}
+            </td>
+            <td>{{ r.scanned_on.strftime("%d-%b-%Y %H:%M") }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="11">No cheques scanned yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

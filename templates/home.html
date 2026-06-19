@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Cheque Scanner{% endblock %}
+{% block content %}
+<div class="hero-card">
+    <h1>Scan a Cheque</h1>
+    <p class="hint">Upload a cheque image to automatically extract the bank, branch, MICR code,
+    IFSC code, date, payee, account details, and amount — cross-checked and ready for review
+    in seconds instead of manual entry.</p>
+    <a class="btn btn-primary" href="{{ url_for('scan') }}">Scan a Cheque &rarr;</a>
+</div>
+{% endblock %}
