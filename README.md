@@ -1,4 +1,4 @@
-# BrightBank — AI Cheque Scanner
+# ABC Bank — AI Cheque Scanner
 
 A Flask app that scans a photo of an Indian bank cheque and extracts the bank name,
 branch, cheque number, MICR code, IFSC code, date, payee, account holder, account
